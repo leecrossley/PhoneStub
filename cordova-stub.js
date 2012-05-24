@@ -1,13 +1,14 @@
-/*global window, document */
+/*jslint bitwise: true */
+/*global window, document, navigator, setTimeout */
 
 var CordovaStub = (function () {
 	"use strict";
-	var cordovaStub = {}, 
+	var cordovaStub = {},
 		deviceStub;
 	window.Cordova = {};
 
 	window.Cordova.m_addEventListener = document.addEventListener;
-	
+
 	document.addEventListener = function (e, handler, capture) {
 		if (e.toLowerCase() === "deviceready") {
 			var loaded;
@@ -40,16 +41,16 @@ var CordovaStub = (function () {
 
 	deviceStub = (function () {
 		var deviceStub = {};
-	
+
 		function number(length) {
 			var result = "", i = 0;
-			while (i < length) { 
-				result += (((1+Math.random())*0x10)|0).toString(9).substring(1);
+			while (i < length) {
+				result += (((1 + Math.random()) * 0x10) | 0).toString(15).substring(1);
 				i = i + 1;
 			}
 			return result;
 		}
-		
+
 		function generateUUID() {
 			return (number(8) + "-" + number(4) + "-" + number(4)
 				+ "-" + number(4) + "-" + number(12));
@@ -61,10 +62,10 @@ var CordovaStub = (function () {
 			platform: navigator.platform,
 			uuid: generateUUID(),
 			version: navigator.appVersion
-		}
-		
+		};
+
 		return deviceStub;
-	})();
-	
+	}());
+
 	return cordovaStub;
-})();
+}());
