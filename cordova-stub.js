@@ -1,21 +1,44 @@
+/*global window, document */
+
 var CordovaStub = (function () {
-	var cordovaStub = {};
+	"use strict";
+	var cordovaStub = {}, 
+		deviceStub;
 	window.Cordova = {};
 
 	window.Cordova.m_addEventListener = document.addEventListener;
 	
 	document.addEventListener = function (e, handler, capture) {
 		if (e.toLowerCase() === "deviceready") {
-			$(document).ready(function () {
-				if (handler && typeof (handler) === "function") {
+			var loaded;
+			if ((typeof (handler) === "undefined") || (typeof (handler) !== "function")) {
+				return;
+			}
+			if (document.addEventListener) {
+				loaded = function () {
+					document.removeEventListener("DOMContentLoaded", loaded, false);
 					handler();
-				}
-			});
+				};
+				document.addEventListener("DOMContentLoaded", loaded, false);
+				window.addEventListener("load", handler, false);
+			} else if (document.attachEvent) {
+				loaded = function () {
+					if (document.readyState === "complete") {
+						document.detachEvent("onreadystatechange", loaded);
+						handler();
+					}
+				};
+				document.attachEvent("onreadystatechange", loaded);
+				window.attachEvent("onload", handler);
+			}
+			if (document.readyState === "complete") {
+				setTimeout(handler, 1);
+			}
 		}
-		window.Cordova.m_addEventListener.call(document, evt, handler, capture);
-	}
+		window.Cordova.m_addEventListener.call(document, e, handler, capture);
+	};
 
-	var deviceStub = (function () {
+	deviceStub = (function () {
 		var deviceStub = {};
 	
 		function number(length) {
