@@ -3,6 +3,8 @@ var assert = require("assert");
 
 var browser = new Browser()
 
+Browser.debug = true;
+
 browser.on("error", function(error) {
 	console.error(error);
 });
