@@ -41,5 +41,4 @@ browser.visit("http://localhost:8125/", function () {
 	
 	console.log("All tests passed");
 	process.exit();
-	
 });

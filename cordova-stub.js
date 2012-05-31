@@ -1,5 +1,5 @@
 /*jslint bitwise: true */
-/*global window, document, navigator, setTimeout */
+/*global window, document, navigator, setTimeout, jsdom */
 
 if (typeof (window) === "undefined") {
 	if (typeof (jsdom) === "undefined") {
@@ -75,30 +75,29 @@ var cordovaStub = (function () {
 
 		return deviceStub;
 	}());
-	
+
 	cordovaStub.connectionStub = (function () {
-		var connectionStub = {};
+		var connectionStub = {},
+			types = {
+				UNKNOWN: "unknown",
+				ETHERNET: "ethernet",
+				WIFI: "wifi",
+				CELL_2G: "2g",
+				CELL_3G: "3g",
+				CELL_4G: "4g",
+				NONE: "none"
+			};
 
 		navigator.network = {
 			connection : {
 				type : ""
 			}
 		};
-		
-		var types = {
-			UNKNOWN: "unknown",
-			ETHERNET: "ethernet",
-			WIFI: "wifi",
-			CELL_2G: "2g",
-			CELL_3G: "3g",
-			CELL_4G: "4g",
-			NONE: "none"
-		};
-		
+
 		connectionStub.setType = function (type) {
 			navigator.network.connection.type = types[type];
 		};
-		
+
 		connectionStub.setType("WIFI");
 
 		return connectionStub;
