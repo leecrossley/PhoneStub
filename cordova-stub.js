@@ -1,11 +1,20 @@
 /*jslint bitwise: true */
 /*global window, document, navigator, setTimeout */
 
+if (typeof (window) === "undefined") {
+	if (typeof (jsdom) === "undefined") {
+		var window = {};
+	} else {
+		var window = jsdom.jsdom().createWindow();
+	}
+}
+
+window.Cordova = {};
+
 var CordovaStub = (function () {
 	"use strict";
 	var cordovaStub = {},
 		deviceStub;
-	window.Cordova = {};
 
 	window.Cordova.m_addEventListener = document.addEventListener;
 
@@ -21,7 +30,7 @@ var CordovaStub = (function () {
 					handler();
 				};
 				document.addEventListener("DOMContentLoaded", loaded, false);
-				window.addEventListener("load", handler, false);
+				window.addEventListener("load", loaded, false);
 			} else if (document.attachEvent) {
 				loaded = function () {
 					if (document.readyState === "complete") {
@@ -30,13 +39,13 @@ var CordovaStub = (function () {
 					}
 				};
 				document.attachEvent("onreadystatechange", loaded);
-				window.attachEvent("onload", handler);
-			}
-			if (document.readyState === "complete") {
+				window.attachEvent("onload", loaded);
+			} else if (document.readyState === "complete") {
 				setTimeout(handler, 1);
 			}
+		} else {
+			window.Cordova.m_addEventListener.call(document, e, handler, capture);
 		}
-		window.Cordova.m_addEventListener.call(document, e, handler, capture);
 	};
 
 	deviceStub = (function () {
@@ -57,7 +66,7 @@ var CordovaStub = (function () {
 		}
 
 		window.device = {
-			name: navigator.appCodeName,
+			name: navigator.appName,
 			cordova: "1.6.1 Stub",
 			platform: navigator.platform,
 			uuid: generateUUID(),
