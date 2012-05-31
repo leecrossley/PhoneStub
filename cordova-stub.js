@@ -9,14 +9,14 @@ if (typeof (window) === "undefined") {
 	}
 }
 
-window.Cordova = {};
+window.cordova = {};
 
-var CordovaStub = (function () {
+var cordovaStub = (function () {
 	"use strict";
 	var cordovaStub = {},
 		deviceStub;
 
-	window.Cordova.m_addEventListener = document.addEventListener;
+	window.cordova.m_addEventListener = document.addEventListener;
 
 	document.addEventListener = function (e, handler, capture) {
 		if (e.toLowerCase() === "deviceready") {
@@ -44,7 +44,7 @@ var CordovaStub = (function () {
 				setTimeout(handler, 1);
 			}
 		} else {
-			window.Cordova.m_addEventListener.call(document, e, handler, capture);
+			window.cordova.m_addEventListener.call(document, e, handler, capture);
 		}
 	};
 
@@ -81,11 +81,11 @@ var CordovaStub = (function () {
 
 		navigator.network = {
 			connection : {
-				type : {}
+				type : ""
 			}
 		};
 		
-		connectionStub.types = {
+		var types = {
 			UNKNOWN: "unknown",
 			ETHERNET: "ethernet",
 			WIFI: "wifi",
@@ -93,10 +93,10 @@ var CordovaStub = (function () {
 			CELL_3G: "3g",
 			CELL_4G: "4g",
 			NONE: "none"
-		}
+		};
 		
 		connectionStub.setType = function (type) {
-			navigator.network.connection.type = connectionStub.types[type];
+			navigator.network.connection.type = types[type];
 		};
 		
 		connectionStub.setType("WIFI");
