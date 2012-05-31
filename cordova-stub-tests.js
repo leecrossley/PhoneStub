@@ -9,8 +9,6 @@ server.spinUp(8125);
 
 var browser = new Zombie();
 
-//browser.debug = true;
-
 browser.on("error", function (error) {
 	console.error(error);
 });

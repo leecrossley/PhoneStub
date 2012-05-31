@@ -75,6 +75,34 @@ var CordovaStub = (function () {
 
 		return deviceStub;
 	}());
+	
+	cordovaStub.connectionStub = (function () {
+		var connectionStub = {};
+
+		navigator.network = {
+			connection : {
+				type : {}
+			}
+		};
+		
+		connectionStub.types = {
+			UNKNOWN: "unknown",
+			ETHERNET: "ethernet",
+			WIFI: "wifi",
+			CELL_2G: "2g",
+			CELL_3G: "3g",
+			CELL_4G: "4g",
+			NONE: "none"
+		}
+		
+		connectionStub.setType = function (type) {
+			navigator.network.connection.type = connectionStub.types[type];
+		};
+		
+		connectionStub.setType("WIFI");
+
+		return connectionStub;
+	}());
 
 	return cordovaStub;
 }());
