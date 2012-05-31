@@ -16,14 +16,16 @@ browser.on("error", function (error) {
 browser.visit("http://localhost:8125/", function () {
 	assert.ok(browser.success);
 	assert.equal(browser.text("title"), "Cordova Stub Tests");
-	browser.document.addEventListener("deviceready", runTests, false);
-	browser.fire("load", browser.window);
-});
-
-function runTests() {
+	
 	var stub = browser.window.cordovaStub;
 	var device = browser.window.device;
 	var navigator = browser.window.navigator;
+	
+	// Device ready test
+	var deviceReady;
+	browser.document.addEventListener("deviceready", function() {deviceReady = true;}, false);
+	browser.fire("load", browser.window);
+	assert.equal(deviceReady, true);
 	
 	// Device stub tests
 	assert.equal(device.name, "Node.js jsDom");
@@ -39,4 +41,5 @@ function runTests() {
 	
 	console.log("All tests passed");
 	process.exit();
-}
+	
+});
