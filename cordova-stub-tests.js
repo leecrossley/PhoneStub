@@ -16,14 +16,13 @@ browser.on("error", function (error) {
 });
 
 browser.visit("http://localhost:8125/", function () {
+	assert.ok(browser.success);
+	assert.equal(browser.text("title"), "Cordova Stub Tests");
 	browser.document.addEventListener("deviceready", runTests, false);
 	browser.fire("load", browser.window);
 });
 
 function runTests() {
-	assert.ok(browser.success);
-	assert.equal(browser.text("title"), "Cordova Stub Tests");
-	
 	// Device stub tests
 	assert.equal(browser.window.device.name, "Node.js jsDom");
 	assert.equal(browser.window.device.cordova, "1.6.1 Stub");
