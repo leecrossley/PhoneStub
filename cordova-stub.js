@@ -13,8 +13,7 @@ window.cordova = {};
 
 var cordovaStub = (function () {
 	"use strict";
-	var cordovaStub = {},
-		deviceStub;
+	var cordovaStub = {};
 
 	window.cordova.m_addEventListener = document.addEventListener;
 
@@ -48,7 +47,7 @@ var cordovaStub = (function () {
 		}
 	};
 
-	deviceStub = (function () {
+	cordovaStub.deviceStub = (function () {
 		var deviceStub = {};
 
 		function number(length) {
@@ -71,6 +70,10 @@ var cordovaStub = (function () {
 			platform: navigator.platform,
 			uuid: generateUUID(),
 			version: navigator.appVersion
+		};
+		
+		deviceStub.setPlatform = function (platform) {
+			window.device.platform = platform;
 		};
 
 		return deviceStub;
