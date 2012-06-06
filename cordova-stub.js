@@ -106,5 +106,16 @@ var cordovaStub = (function () {
 		return connectionStub;
 	}());
 
+	cordovaStub.fileStub = (function () {
+		var fileStub = {};
+
+		window.LocalFileSystem = {
+			TEMPORARY: 0,
+			PERSISTENT: 1
+		};
+
+		return fileStub;
+	}());
+
 	return cordovaStub;
 }());

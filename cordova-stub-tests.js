@@ -41,6 +41,10 @@ browser.visit("http://localhost:8125/", function () {
 	stub.connectionStub.setType("CELL_3G");
 	assert.equal(navigator.network.connection.type, "3g");
 	
+	// File stub tests
+	assert.equal(browser.window.LocalFileSystem.TEMPORARY, 0);
+	assert.equal(browser.window.LocalFileSystem.PERSISTENT, 1);
+	
 	console.log("All tests passed");
 	process.exit();
 });
