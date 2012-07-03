@@ -20,6 +20,7 @@ browser.visit("http://localhost:8125/", function () {
 	var stub = browser.window.cordovaStub;
 	var device = browser.window.device;
 	var navigator = browser.window.navigator;
+	var localFileSystem = browser.window.LocalFileSystem;
 	
 	// Device ready test
 	var deviceReady;
@@ -45,6 +46,43 @@ browser.visit("http://localhost:8125/", function () {
 	assert.equal(browser.window.LocalFileSystem.TEMPORARY, 0);
 	assert.equal(browser.window.LocalFileSystem.PERSISTENT, 1);
 	
+	browser.window.requestFileSystem(localFileSystem.PERSISTENT, 0, gotFS, fail);
+	
 	console.log("All tests passed");
 	process.exit();
 });
+
+    function gotFS(fileSystem) {
+        fileSystem.root.getFile("readme.txt", null, gotFileEntry, fail);
+    }
+
+    function gotFileEntry(fileEntry) {
+        fileEntry.file(gotFile, fail);
+    }
+
+    function gotFile(file){
+        readDataUrl(file);
+        readAsText(file);
+    }
+
+    function readDataUrl(file) {
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            console.log("Read as data URL");
+            console.log(evt.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function readAsText(file) {
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            console.log("Read as text");
+            console.log(evt.target.result);
+        };
+        reader.readAsText(file);
+    }
+
+    function fail(evt) {
+        console.log(evt.target.error.code);
+    }

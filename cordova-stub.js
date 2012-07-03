@@ -107,12 +107,45 @@ var cordovaStub = (function () {
 	}());
 
 	cordovaStub.fileStub = (function () {
-		var fileStub = {};
+		var fileStub = {},
+			temporaryFiles = [],
+			persistedFiles = [];
 
 		window.LocalFileSystem = {
 			TEMPORARY: 0,
 			PERSISTENT: 1
 		};
+		
+		var getFile = function (name, options, successCb, errorCb) {
+			
+		};
+		
+		var fileSystem = {
+			root : {
+				getFile : getFile
+			}
+		};
+		
+		window.requestFileSystem = function (localFileSystem, size, successCb, errorCb) {
+			if (typeof (errorCb) !== "function") {
+				errorCb = function(err) {
+					console.log("File system error: " + err);
+				};
+			}
+			if (typeof (successCb) !== "function") {
+				errorCb("No success callback");
+				return;
+			}
+			if (localFileSystem === 0) {
+				successCb(fileSystem);
+			} else if (localFileSystem === 1) {
+				successCb(fileSystem);
+			} else {
+				errorCb(new FileError(FileError.SYNTAX_ERR));
+			}
+		};
+		
+		// WIP fileSystem.root.getFile(
 
 		return fileStub;
 	}());
