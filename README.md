@@ -1,7 +1,7 @@
-Cordova Stub
-============
+PhoneStub
+=========
 
-Facilitates the testing and running of Cordova (PhoneGap) based applications in a desktop or headless browser.
+Facilitates the testing and running of PhoneGap (Cordova) based applications in a desktop or headless browser.
 
 ## WIP
 
